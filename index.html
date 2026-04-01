@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynapseAI | Academic & Chatbot Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="light-mode">
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <nav class="nav-links">
+                    <a href="#" class="nav-item active" data-view="search-view"><i data-lucide="search"></i> <span>Search</span></a>
+                    <a href="#" class="nav-item" data-view="chat-view"><i data-lucide="monitor"></i> <span>Computer</span></a>
+                </nav>
+                
+                <button id="new-thread-btn" class="new-thread-btn"><i data-lucide="plus"></i> <span>New thread</span> <kbd>Ctrl I</kbd></button>
+                
+                <nav class="nav-links secondary-nav">
+                    <a href="#" class="nav-item" data-view="history-view"><i data-lucide="history"></i> <span>History</span></a>
+                    <a href="#" class="nav-item" data-view="discover-view"><i data-lucide="compass"></i> <span>Discover</span></a>
+                    <a href="#" class="nav-item" data-view="spaces-view"><i data-lucide="layout-grid"></i> <span>Spaces</span></a>
+                    <a href="#" class="nav-item" data-view="finance-view"><i data-lucide="trending-up"></i> <span>Finance</span></a>
+                    <a href="#" class="nav-item" data-view="health-view"><i data-lucide="heart"></i> <span>Health</span></a>
+                    <button class="nav-item more-btn"><i data-lucide="more-horizontal"></i> <span>More</span></button>
+                </nav>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="recent-threads">
+                    <span class="recent-label">Recent</span>
+                    <p class="empty-state">Recent and active threads will appear here.</p>
+                </div>
+                <div class="sidebar-footer">
+                    <button id="theme-toggle" class="theme-btn" title="Toggle Dark Mode">
+                        <i data-lucide="sun" id="sun-icon"></i>
+                        <i data-lucide="moon" id="moon-icon" style="display: none;"></i>
+                    </button>
+                    <div class="signin-btn-container">
+                        <button class="signin-btn"><i data-lucide="user-plus"></i> <span>Sign In</span></button>
+                    </div>
+                    <div class="user-profile" style="display: none;">
+                        <div class="avatar">S</div>
+                        <span>Guest User</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Hero Search View -->
+            <section id="search-view" class="view-section hero">
+                <div class="brand">
+                    <div class="logo-container">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 5C11.7157 5 5 11.7157 5 20C5 28.2843 11.7157 35 20 35C28.2843 35 35 28.2843 35 20C35 11.7157 28.2843 5 20 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <path d="M12 20C12 15.5817 15.5817 12 20 12C24.4183 12 28 15.5817 28 20C28 24.4183 24.4183 28 20 28C15.5817 28 12 24.4183 12 20Z" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.5" />
+                            <circle cx="20" cy="20" r="3" fill="currentColor" />
+                            <path d="M20 12V5M20 35V28M12 20H5M35 20H28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h1 class="brand-name">SynapseAI</h1>
+                </div>
+
+                <!-- Central Search Bar Component -->
+                <div class="search-container">
+                    <div id="chat-messages" class="chat-messages"></div>
+                    <div class="search-wrapper">
+                        <div id="file-badge" class="file-badge" style="display: none;">
+                            <i data-lucide="file-text"></i>
+                            <span id="file-name"></span>
+                            <button id="remove-file"><i data-lucide="x"></i></button>
+                        </div>
+                        <textarea id="main-search" placeholder="Type @ for connectors and sources" rows="1"></textarea>
+                        <input type="file" id="file-input" accept=".pdf,.png,.jpg,.jpeg,.webp,.csv,.md,.txt,.mp4" style="display: none;">
+                        <div class="search-actions">
+                            <div class="left-actions">
+                                <div class="dropdown-wrapper">
+                                    <button class="action-btn" id="focus-btn"><i data-lucide="plus"></i> <span class="btn-text">Focus</span></button>
+                                    <div class="dropdown-menu" id="focus-dropdown">
+                                        <div class="dropdown-item active" data-value="All"><i data-lucide="globe"></i> All</div>
+                                        <div class="dropdown-item" data-value="Academic"><i data-lucide="graduation-cap"></i> Academic</div>
+                                        <div class="dropdown-item" data-value="Writing"><i data-lucide="pen-tool"></i> Writing</div>
+                                        <div class="dropdown-item" data-value="YouTube"><i data-lucide="youtube"></i> YouTube</div>
+                                        <div class="dropdown-item" data-value="Reddit"><i data-lucide="message-square"></i> Reddit</div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-wrapper">
+                                    <button class="action-btn" id="computer-btn"><i data-lucide="monitor"></i> <span class="btn-text">Computer</span> <i data-lucide="chevron-down" class="small-icon"></i></button>
+                                    <div class="dropdown-menu" id="computer-dropdown">
+                                        <div class="dropdown-item active" data-value="Off">Off</div>
+                                        <div class="dropdown-item" data-value="On">On</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right-actions">
+                                <div class="dropdown-wrapper">
+                                    <span class="model-badge" id="model-btn"><span class="btn-text">Gemini 2.5 Flash</span> <i data-lucide="chevron-down" class="small-icon"></i></span>
+                                    <div class="dropdown-menu model-dropdown" id="model-dropdown">
+                                        <div class="dropdown-item active" data-value="gemini-2.5-flash">Gemini 2.5 Flash</div>
+                                        <div class="dropdown-item" data-value="gemini-2.0-flash">Gemini 2.0 Flash</div>
+                                        <div class="dropdown-item" data-value="gemini-1.5-pro">Gemini 1.5 Pro</div>
+                                        <div class="dropdown-item" data-value="gemini-1.5-flash">Gemini 1.5 Flash</div>
+                                    </div>
+                                </div>
+                                <button class="icon-btn" id="attach-btn" title="Upload File"><i data-lucide="paperclip"></i></button>
+                                <button class="icon-btn" id="mic-btn"><i data-lucide="mic"></i></button>
+                                <button class="send-btn" disabled><i data-lucide="arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quick-actions" id="quick-actions-area">
+                        <button class="action-chip" data-action="compare"><i data-lucide="git-pull-request"></i> <span>Compare</span></button>
+                        <button class="action-chip" data-action="summarize"><i data-lucide="file-text"></i> <span>Summarize</span></button>
+                        <div class="chip-divider"></div>
+                        <button class="action-chip category" data-category="history"><i data-lucide="history"></i> <span>History</span></button>
+                        <button class="action-chip category" data-category="spaces"><i data-lucide="layout-grid"></i> <span>Spaces</span></button>
+                        <button class="action-chip category" data-category="finance"><i data-lucide="trending-up"></i> <span>Finance</span></button>
+                        <button class="action-chip category" data-category="discovery"><i data-lucide="compass"></i> <span>Discovery</span></button>
+                        <button class="action-chip category" data-category="health"><i data-lucide="heart"></i> <span>Health</span></button>
+                        <button class="action-chip category" data-category="computer"><i data-lucide="monitor"></i> <span>Computer</span></button>
+                        <button class="action-chip more-btn"><i data-lucide="more-horizontal"></i> <span>More</span></button>
+                    </div>
+                </div>
+
+                <!-- Suggestions Section (Hidden after first message) -->
+                <div class="suggestions" id="suggestions-area">
+                    <div class="suggestion-tabs">
+                        <button class="tab active"><i data-lucide="grid"></i> Organize my life</button>
+                        <button class="tab"><i data-lucide="lightbulb"></i> Help me learn</button>
+                        <button class="tab"><i data-lucide="code-2"></i> Create a prototype</button>
+                        <button class="tab"><i data-lucide="git-pull-request"></i> Compare</button>
+                        <button class="tab"><i data-lucide="file-text"></i> Summarize</button>
+                        <button class="tab"><i data-lucide="briefcase"></i> Build a business</button>
+                    </div>
+                    <ul class="suggestion-list">
+                        <li><a href="#">Create a budget tracker from my spending</a></li>
+                        <li><a href="#">Sort my tasks and prioritize this week</a></li>
+                        <li><a href="#">Build a personal CRM to track my network</a></li>
+                        <li><a href="#">Triage my inbox and draft responses</a></li>
+                        <li><a href="#">Prepare me for an upcoming meeting</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Discover View -->
+            <section id="discover-view" class="view-section" style="display: none;">
+                <div class="view-header">
+                    <h2>Discover</h2>
+                    <div class="topic-tabs">
+                        <button class="topic-tab active">Top</button>
+                        <button class="topic-tab">Tech & Science</button>
+                        <button class="topic-tab">Business</button>
+                        <button class="topic-tab">Arts & Culture</button>
+                        <button class="topic-tab">Sports</button>
+                    </div>
+                </div>
+                <div class="discover-feed" id="discover-feed">
+                    <!-- Articles will be injected here -->
+                </div>
+            </section>
+
+            <!-- Finance View -->
+            <section id="finance-view" class="view-section" style="display: none;">
+                <div class="view-header">
+                    <h2>Finance</h2>
+                </div>
+                <div class="finance-dashboard">
+                    <div class="market-cards">
+                        <div class="market-card">
+                            <span class="market-name">NIFTY 50</span>
+                            <span class="market-value">22,786.90</span>
+                            <span class="market-change up">+2.04%</span>
+                        </div>
+                        <div class="market-card">
+                            <span class="market-name">S&P BSE SENSEX</span>
+                            <span class="market-value">73,522.21</span>
+                            <span class="market-change up">+2.19%</span>
+                        </div>
+                        <div class="market-card">
+                            <span class="market-name">BITCOIN</span>
+                            <span class="market-value">$68,401.33</span>
+                            <span class="market-change up">+1.47%</span>
+                        </div>
+                    </div>
+                    <div class="finance-news">
+                        <h3>Market Summary</h3>
+                        <div class="news-list" id="finance-news-list">
+                            <!-- Finance news will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Side Card (Login) -->
+        <aside class="right-panel">
+            <div class="auth-card">
+                <button class="close-card"><i data-lucide="x"></i></button>
+                <div class="auth-icon">
+                    <i data-lucide="command"></i>
+                </div>
+                <h2>Sign in or create an account</h2>
+                <p>Save and sync your searches</p>
+
+                <div class="auth-methods">
+                    <button class="google-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                fill="#4285F4" />
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                fill="#34A853" />
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                fill="#EA4335" />
+                        </svg>
+                        Continue with Google
+                    </button>
+                    <button class="apple-btn">
+                        <i data-lucide="apple"></i>
+                        Continue with Apple
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <input type="email" placeholder="Enter your email" class="email-input">
+                <button class="continue-btn" disabled>Continue with email</button>
+                <a href="#" class="sso-link">Single sign-on (SSO)</a>
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Use lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
